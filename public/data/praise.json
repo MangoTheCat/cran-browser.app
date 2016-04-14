@@ -1,6 +1,14 @@
 {
   "package": "praise",
   "exports": ["praise", "praise_parts"],
+  "description": [
+    {
+      "dependency": "testthat",
+      "line": 14,
+      "col1": 11,
+      "col2": 18
+    }
+  ],
   "functions": [
     {
       "ID": "praise",
