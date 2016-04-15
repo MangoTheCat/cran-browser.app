@@ -4,7 +4,7 @@
   "description": [
     {
       "dependency": "testthat",
-      "line": 14,
+      "line": 13,
       "col1": 11,
       "col2": 18
     }
