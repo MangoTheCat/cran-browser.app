@@ -10,6 +10,7 @@ var pkg_re = new RegExp("^/map/([\\w0-9\\.]+)$");
 router.get(pkg_re, function(req, res) {
     var package = req.params[0];
     var url = pkg_url(db_url, package);
+    res.set('Content-Type', 'application/json');
     got.stream(url).pipe(res);
 });
 
