@@ -10,6 +10,10 @@ var nano = require('nano')(db_url);
 
 var pkg_re = new RegExp("^/map/([\\w0-9\\.]+)$");
 
+router.get("/check", function(req, res) {
+    res.send("Here I am.");
+});
+
 router.get(pkg_re, function(req, res) {
     var package = req.params[0];
     var auth = pkg_url_auth(db_url);
