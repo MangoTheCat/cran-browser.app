@@ -39,14 +39,27 @@ router.put(pkg_re, function(req, res) {
     });
 });
 
-// Find the position of a single
-
+// Find the position of a single function
 router.get(
     new RegExp("^/findfunction/([\\w0-9\\.]+)/(.*)$"),
     function(req, res) {
 	var package = req.params[0];
 	var func = req.params[1];
+	var db = nano.use('code');
 
+	res.set('Content-Type', 'application/json');
+	db.get(package, function(err, body) {
+	    if (err) { return handle_error(err, res); }
+	    var fun = body.functions
+		.filter(function(x) { return x.ID == func; });
+	    console.log(fun);
+	    if (fun.length) {
+		res.send(fun[0]);
+	    } else {
+		res.set(404)
+		    .send('{ "result": "error", "error": "Not found" }');
+	    }
+	});
     }
 )
 
