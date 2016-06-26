@@ -53,11 +53,20 @@ router.get(
 // Get all links for a file
 
 router.get(
-    new Regexp("^/filelinks/([\\w0-9\\.]+)/(.*)$"),
+    new RegExp("^/filelinks/([\\w0-9\\.]+)/(.*)$"),
     function(req, res) {
 	var package = req.params[0];
 	var file = req.params[1];
+	var db = nano.use('code');
 
+	res.set('Content-Type', 'application/json');
+
+	db.get(package, function(err, body) {
+	    if (err) { return handle_error(err, res); }
+	    var calls = body.calls
+		.filter(function(x) { return x.file == file; });
+	    res.send(calls);
+	});
     }
 )
 
