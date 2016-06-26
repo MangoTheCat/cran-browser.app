@@ -56,9 +56,9 @@ router.get(
 	    if (err) { return handle_error(err, res); }
 	    var fun = body.functions
 		.filter(function(x) { return x.ID == func; });
-	    console.log(fun);
-	    if (fun.length) {
-		res.send(fun[0]);
+	    fun = fun[0];
+	    if (fun) {
+		res.send(fun);
 	    } else {
 		res.set(404)
 		    .send('{ "result": "error", "error": "Not found" }');
