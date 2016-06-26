@@ -63,6 +63,32 @@ router.get(
     }
 )
 
+// Redirect to a function
+router.get(
+    new RegExp("^/redirect/([\\w0-9\\.]+)/(.*)$"),
+    function(req, res) {
+	var package = req.params[0];
+	var func = req.params[1];
+	var db = nano.use('code');
+
+	db.get(package, function(err, body) {
+	    if (err) { return handle_error(err, res); }
+	    var fun = body.functions
+		.filter(function(x) { return x.ID == func; });
+	    fun = fun[0];
+	    var url;
+	    if (fun) {
+		url = 'https://github.com/cran/' + package +
+		    '/blob/master/' + fun.file + '#L' + fun.line;
+	    } else {
+		url = 'https://github.com/cran/' + package;
+	    }
+	    res.redirect(301, url);
+	});
+    }
+)
+
+
 // Get all links for a file
 
 router.get(
