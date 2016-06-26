@@ -80,7 +80,7 @@ router.get(
 		var fun = body.functions
 		    .filter(function(x) { return x.ID == func; });
 		fun = fun[0];
-		if (fun) {
+		if (fun && fun.file) {
 		    url = 'https://github.com/cran/' + package +
 			'/blob/master/' + fun.file + '#L' + fun.line;
 		}
