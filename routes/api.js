@@ -77,10 +77,8 @@ router.get(
 
 	db.get(package, function(err, body) {
 	    var url;
-	    if (err) {
-		url = 'https://github.com/cran/' + package;
-
-	    } else {
+	    url = 'https://github.com/cran/' + package;
+	    if (! err) {
 		var fun = body.functions
 		    .filter(function(x) { return x.ID == func; });
 		fun = fun[0];
