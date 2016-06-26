@@ -72,17 +72,20 @@ router.get(
 	var db = nano.use('code');
 
 	db.get(package, function(err, body) {
-	    if (err) { return handle_error(err, res); }
-	    var fun = body.functions
-		.filter(function(x) { return x.ID == func; });
-	    fun = fun[0];
 	    var url;
-	    if (fun) {
-		url = 'https://github.com/cran/' + package +
-		    '/blob/master/' + fun.file + '#L' + fun.line;
-	    } else {
+	    if (err) {
 		url = 'https://github.com/cran/' + package;
+
+	    } else {
+		var fun = body.functions
+		    .filter(function(x) { return x.ID == func; });
+		fun = fun[0];
+		if (fun) {
+		    url = 'https://github.com/cran/' + package +
+			'/blob/master/' + fun.file + '#L' + fun.line;
+		}
 	    }
+
 	    res.redirect(301, url);
 	});
     }
