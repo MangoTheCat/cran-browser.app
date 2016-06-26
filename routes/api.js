@@ -40,6 +40,28 @@ router.put(pkg_re, function(req, res) {
     });
 });
 
+// Find the position of a single
+
+router.get(
+    new RegExp("^/findfunction/([\\w0-9\\.]+)/(.*)$"),
+    function(req, res) {
+	var package = req.params[0];
+	var func = req.params[1];
+
+    }
+)
+
+// Get all links for a file
+
+router.get(
+    new Regexp("^/filelinks/([\\w0-9\\.]+)/(.*)$"),
+    function(req, res) {
+	var package = req.params[0];
+	var file = req.params[1];
+
+    }
+)
+
 // Get the auth part only
 function pkg_url_auth(db_url) {
     return url.parse(db_url).auth;
