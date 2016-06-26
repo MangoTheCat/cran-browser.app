@@ -22,7 +22,6 @@ router.put(pkg_re, function(req, res) {
     var package = req.params[0];
     var db = nano.use('code');
     var doc = req.body;
-
     res.set('Content-Type', 'application/json');
 
     doc._id = package;
@@ -32,7 +31,7 @@ router.put(pkg_re, function(req, res) {
 
 	db.insert(doc, package, function(err, body) {
 	    if (err) {
-		res.send(JSON.stringify({ 'result': 'error', 'error': err }));
+		if (err) { return handle_error(err, res); }
 	    } else {
 		res.send(JSON.stringify({ 'result': 'OK' }));
 	    }
@@ -61,6 +60,12 @@ router.get(
 
     }
 )
+
+function handle_error(err, res) {
+    res.set('Content-Type', 'application/json')
+	.set(500)
+	.send(JSON.stringify({ 'result': 'error', 'error': err }));
+}
 
 // Get the auth part only
 function pkg_url_auth(db_url) {
