@@ -7,6 +7,7 @@ var got = require('got');
 var stream = require('stream');
 var url = require('url');
 var nano = require('nano')(db_url);
+var isarray = require('isarray');
 
 var pkg_re = new RegExp("^/map/([\\w0-9\\.]+)$");
 
@@ -93,6 +94,35 @@ router.get(
     }
 )
 
+// Redirect to manual
+router.get(
+    new RegExp("^/redirectdocs/([\\w0-9\\.]+)/(.*)$"),
+    function(req, res) {
+	var package = req.params[0];
+	var func = req.params[1];
+	var db = nano.use('docs');
+
+	db.get(package, function(err, body) {
+	    var url = 'http://search.r-project.org/library/' +
+		package + '/html/00Index.html';
+
+	    if (!err) {
+		var pages = Object.keys(body);
+		var hits = pages.filter(function(x) {
+		    return isarray(body[x]) && body[x].indexOf(func) > -1
+		});
+		console.log(pages);
+		console.log(hits);
+		if (hits.length) {
+		    var html = hits[0].replace(/\.Rd$/, '.html');
+		    url = url.replace(/00Index\.html$/, html);
+		}
+	    }
+
+	    res.redirect(301, url);
+	});
+    }
+)
 
 // Get all links for a file
 
